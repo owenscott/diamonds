@@ -28,8 +28,8 @@ var Process = function(options) {
 			this.queuedInventory = true;
 		},
 
-		incrementInventory: function() {
-			this.inventory = this.inventory + 1;
+		incrementInventory: function(num) {
+			this.inventory = this.inventory + num;
 		},
 		
 		incrementAndCheck: function() {
@@ -74,7 +74,7 @@ var Process = function(options) {
 			}
 			else {
 				console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
-				this.nextProcess.incrementInventory();
+				this.nextProcess.incrementInventory(1);
 			}
 
 
@@ -112,7 +112,14 @@ var saw = new Process({
 	name: 'saw',
 	el: 'saw',
 	cycleTime: 60,
-	nextProcess: round
+	nextProcess: round,
+	passToNextProcess: function() {
+
+		this.inventory = this.inventory - 1;
+		console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
+		this.nextProcess.incrementInventory(2);
+
+	}
 })
 
 var cleave = new Process({
@@ -127,8 +134,19 @@ var inspectRoughStones = new Process({
 	el: 'inspect-stones',
 	cycleTime: 30,
 	// passes either to round or cleave
-	nextProcess: cleave,
-	inventory: Infinity
+	inventory: Infinity,
+	passToNextProcess: function() {
+
+		this.inventory = this.inventory - 1;
+		console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
+		if(Math.random() < 0.2) {
+			cleave.incrementInventory(1);
+		}
+		else {
+			round.incrementInventory(1);
+		}
+
+	}
 })
 
 processes = [
@@ -159,7 +177,6 @@ var main = function() {
 		$('#elapsed-time').html(elapsedTime);
 		$('#cycle-time').html(parseInt(elapsedTime / throughout));
 	}
-
 	setTimeout(main, $('#speed').val());
 }
 
