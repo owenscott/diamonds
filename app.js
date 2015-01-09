@@ -74,7 +74,6 @@ var Process = function(options) {
 				}
 			}
 			else {
-				console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
 				this.nextProcess.incrementInventory(1);
 			}
 
@@ -117,7 +116,6 @@ var saw = new Process({
 	passToNextProcess: function() {
 
 		this.inventory = this.inventory - 1;
-		console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
 		this.nextProcess.incrementInventory(2);
 
 	}
@@ -139,11 +137,14 @@ var inspectRoughStones = new Process({
 	passToNextProcess: function() {
 
 		this.inventory = this.inventory - 1;
-		console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
-		if(Math.random() < $('#doubles').val()) {
+		var random = Math.random();
+		console.log(random);
+		if(random < $('#doubles').val()) {
+			console.log('double');
 			cleave.incrementInventory(1);
 		}
 		else {
+			console.log('single');
 			round.incrementInventory(1);
 		}
 
@@ -194,7 +195,16 @@ $('document').ready( function() {
 			measure = false;
 			$('#measure').html('Start Measuring');
 		}
-	});	
+	});
+
+	$('#reset').click(function() {	
+		processes.forEach(function(process) {
+			if (process.inventory < Infinity) {
+				process.inventory = 0;				
+			}
+
+		})
+	});
 
 })
 
