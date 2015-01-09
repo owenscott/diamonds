@@ -33,7 +33,7 @@ var Process = function(options) {
 		},
 		
 		incrementAndCheck: function() {
-			if (this.currentTime === this.cycleTime) {
+			if (this.currentTime >= this.cycleTime) {
 				this.passToNextProcess();
 				this.currentTime = 0;
 				if (this.inventory > 0) {
@@ -58,6 +58,7 @@ var Process = function(options) {
 		logSelf: function() {
 			$('#' + this.el).html(this.inventory);
 			$('#' + this.el + '-progress').html(this.currentTime + ' / ' + this.cycleTime)
+			this.cycleTime = $('#' + this.el + '-time').val()
 		},
 
 		passToNextProcess: options.passToNextProcess || function() {
@@ -139,7 +140,7 @@ var inspectRoughStones = new Process({
 
 		this.inventory = this.inventory - 1;
 		console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
-		if(Math.random() < 0.2) {
+		if(Math.random() < $('#doubles').val()) {
 			cleave.incrementInventory(1);
 		}
 		else {
