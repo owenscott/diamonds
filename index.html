@@ -6,32 +6,41 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Process</th><th>Inventory</th>
+					<th>Process</th><th>WIP</th><th>Progress</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>Inspect Stones</td><td id="inspect-stones"></td>
+					<td>Inspect Stones</td><td id="inspect-stones"></td><td id="inspect-stones-progress"></td>
 				</tr>
 				<tr>
-					<td>Cleave</td><td id="cleave"></td>
+					<td>Cleave</td><td id="cleave"></td><td id="cleave-progress"></td>
 				</tr>
 				<tr>
-					<td>Saw</td><td id="saw"></td>
+					<td>Saw</td><td id="saw"></td><td id="saw-progress"></td>
 				</tr>
 				<tr>
-					<td>Round</td><td id="round"></td>
+					<td>Round</td><td id="round"></td><td id="round-progress"></td>
 				</tr>
 				<tr>
-					<td>Polish</td><td id="polish"></td>
+					<td>Polish</td><td id="polish"></td><td id="polish-progress"></td>
 				</tr>
 				<tr>
-					<td>Inspect</td><td id="inspect"></td>
+					<td>Inspect</td><td id="inspect"></td><td id="inspect-progress"></td>
 				</tr>
 			</tbody>
 		</table>
+		<p>------------</p>
 		<p><strong>Turn: </strong><strong id="turn"></strong></p>
 		<p><strong>Completed: </strong><strong id="completed"></strong></p>
+		<p>------------</p>
+		<p><strong>Completed During Measuring: </strong><strong id="throughout"></strong></p>
+		<p><strong>Elapsed Time During Measuring: </strong><strong id="elapsed-time"></strong></p>
+		<p><strong>Cycle Time: </strong><strong id="cycle-time"></strong></p>
+		<button id="measure">Start Measuring</button>
+		<p>------------</p>
+
+		<label>Turn Length (ms): <input type="number" id="speed" value="200"></label>
 		<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 		<script src="app.js"></script>
 	</body>

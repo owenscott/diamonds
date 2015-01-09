@@ -1,4 +1,8 @@
 var completed = 0;
+var measure = false;
+
+var throughout = 0;
+var elapsedTime = 0;
 
 var Process = function(options) {
 
@@ -29,11 +33,14 @@ var Process = function(options) {
 		},
 		
 		incrementAndCheck: function() {
-
 			if (this.currentTime === this.cycleTime) {
 				this.passToNextProcess();
 				this.currentTime = 0;
+				if (this.inventory > 0) {
+					this.currentTime++;
+				}
 			}
+			
 			else if (this.inventory > 0) {
 				this.currentTime++;
 			}
@@ -41,6 +48,7 @@ var Process = function(options) {
 			if (this.name === 'cleave')	this.logSelf();
 
 			if (this.queuedInventory) {
+				console.log('starting production');
 				this.queuedInventory = false;
 				this.inventory++;
 			}
@@ -49,6 +57,7 @@ var Process = function(options) {
 
 		logSelf: function() {
 			$('#' + this.el).html(this.inventory);
+			$('#' + this.el + '-progress').html(this.currentTime + ' / ' + this.cycleTime)
 		},
 
 		passToNextProcess: options.passToNextProcess || function() {
@@ -59,6 +68,9 @@ var Process = function(options) {
 			if (this.nextProcess === 'done') {
 				console.log('one unit done');
 				completed++;
+				if (measure) {
+					throughout++;
+				}
 			}
 			else {
 				console.log('passing from ' + this.name + ' to ' + this.nextProcess.name);
@@ -130,16 +142,42 @@ processes = [
 
 var turn = 0;
 
+
+
+
+var main = function() {
+	processes.forEach(function(process) {
+		process.incrementAndCheck();
+		process.logSelf();
+	})
+	turn ++;
+	$('#turn').html(turn);
+	$('#completed').html(completed);
+	if (measure) {
+		elapsedTime++;
+		$('#throughout').html(throughout);
+		$('#elapsed-time').html(elapsedTime);
+		$('#cycle-time').html(parseInt(elapsedTime / throughout));
+	}
+
+	setTimeout(main, $('#speed').val());
+}
+
 $('document').ready( function() {
-	setInterval(function() {
-		processes.forEach(function(process) {
-			process.incrementAndCheck();
-			process.logSelf();
-		})
-		turn ++;
-		$('#turn').html(turn);
-		$('#completed').html(completed);
-	}, 200)
+	setTimeout(main , 100);
+	$('#measure').click(function() {
+		if (measure === false) {
+			measure = true;
+			throughout = 0;
+			elapsedTime = 0;
+			$('#measure').html('Stop Measuring');
+		}
+		else {
+			measure = false;
+			$('#measure').html('Start Measuring');
+		}
+	});	
+
 })
 
 
