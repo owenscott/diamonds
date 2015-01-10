@@ -177,7 +177,7 @@ var main = function() {
 		elapsedTime++;
 		$('#throughout').html(throughout);
 		$('#elapsed-time').html(elapsedTime);
-		$('#cycle-time').html(parseInt(elapsedTime / throughout));
+		$('#cycle-time').html(parseFloat(elapsedTime / throughout).toFixed(2));
 	}
 	setTimeout(main, $('#speed').val());
 }
